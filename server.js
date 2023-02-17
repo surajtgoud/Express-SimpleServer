@@ -1,35 +1,13 @@
 const express = require("express");
 
+const friendsController = require("./controllers/friends.controller");
+
+const messagesController = require("./controllers/messages.controller");
+
 const app = express();
 
 const PORT = 3000;
 
-const friends = [
-  {
-    id: 0,
-    name: "Alice",
-    age: 25,
-    gender: "Female",
-    hometown: "New York",
-    interests: ["Reading", "Traveling", "Cooking"],
-  },
-  {
-    id: 1,
-    name: "Bob",
-    age: 30,
-    gender: "Male",
-    hometown: "Los Angeles",
-    interests: ["Sports", "Music", "Movies"],
-  },
-  {
-    id: 2,
-    name: "Charlie",
-    age: 28,
-    gender: "Male",
-    hometown: "Chicago",
-    interests: ["Hiking", "Photography", "Painting"],
-  },
-];
 //Middleware in action
 app.use((req, res, next) => {
   console.log(`${req.method} and ${req.url} `);
@@ -39,47 +17,23 @@ app.use((req, res, next) => {
 //Middleware for parsing req.body json
 app.use(express.json());
 
-//Route for POST request for adding friends
-app.post("/friends", (req, res) => {
-  if (!req.body.name) {
-    return res.status(400).json({
-      error: "In correct input",
-    });
-  }
-  let friend = {
-    name: req.body.name,
-    id: friends.length,
-  };
+// Friends Routes
+//route for POST request for adding friends
+app.post("/friends", friendsController.postFriends);
 
-  friends.push(friend);
-  res.send(friend);
-});
+//route for GET requests for Friends
+app.get("/friends", friendsController.getFriends);
 
-//routes for GET requests for Friends
-app.get("/friends", (req, res) => {
-  res.json(friends);
-});
+//route for GET request to get a specific friend with friendId
+app.get("/friends/:friendId", friendsController.getFriend);
 
-app.get("/friends/:friendId", (req, res) => {
-  const friendId = Number(req.params.friendId);
-  const friend = friends[friendId];
-  if (friend) {
-    res.status(200).json(friend);
-  } else {
-    res.status(404).json({
-      error: "Friend does not exist",
-    });
-  }
-});
+// Messages Routes
+//route for GET requesting for messages
+app.get("/messages", messagesController.getMessages);
+//route for posting a message
+app.post("/messages", messagesController.postMessages);
 
-app.get("/message", (req, res) => {
-  res.send("Watsup baby boy!");
-});
-
-app.get("/help", (req, res) => {
-  res.send("I have no money to help you baby!");
-});
-
+//starting server to listen at port mentioned
 app.listen(PORT, () => {
   console.log(`Server is live on Port number:${PORT}`);
 });
