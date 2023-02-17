@@ -1,5 +1,5 @@
 const express = require("express");
-const friendsController = require("./controllers/friends.controller");
+const friendsController = require("../controllers/friends.controller");
 
 //route for POST request for adding friends
 const friendsRouter = express.Router();

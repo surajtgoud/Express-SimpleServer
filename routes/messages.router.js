@@ -1,5 +1,5 @@
 const express = require("express");
-const messagesController = require("./controllers/messages.controller");
+const messagesController = require("../controllers/messages.controller");
 
 const messagesRouter = express.Router();
 //route for GET requesting for messages
