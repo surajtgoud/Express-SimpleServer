@@ -11,7 +11,8 @@ app.use((req, res, next) => {
   console.log(`${req.method} and ${req.url} `);
   next();
 });
-
+//serving static site from express
+app.use("/site", express.static("public"));
 //Middleware for parsing req.body json
 app.use(express.json());
 
